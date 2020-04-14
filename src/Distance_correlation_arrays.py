@@ -1,5 +1,6 @@
-import numpy as np;
-import math
+import sys
+sys.path.append("..")
+from lib.lib import *
 class Distance_correlation():
     # Vectores aleatorios
     # Cuando se instancie el objeto, se deben cargar estos vectores usando la clase anterior
