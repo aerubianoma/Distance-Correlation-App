@@ -1,5 +1,5 @@
 import sys
-from Prueba_UI_PY import *
+from UI_PY import *
 from PyQt5.QtWidgets import QDialog
 from all_class import *
 
@@ -17,8 +17,4 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         prueba.calculateDistanceCorrelation(100)
         self.distance_label.setText(str(prueba.distance_correlation))
         
-if __name__ == "__main__":
-    app = QtWidgets.QApplication([])
-    window = MainWindow()
-    window.show()
-    app.exec_()
+
