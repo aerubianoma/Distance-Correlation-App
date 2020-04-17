@@ -1,11 +1,8 @@
 import sys
+sys.path.append("..")
+from lib.lib import *
 from UI_PY import *
-from PyQt5.QtWidgets import QDialog,QMessageBox,QWidget,QVBoxLayout,QSizePolicy
 from all_class import *
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
@@ -39,7 +36,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             muestra_aleatoria.y = np.random.uniform(-1,1,int(self.tamano.text()))
             self.x = muestra_aleatoria.x
             self.y = muestra_aleatoria.y
-            print(self.x)
             muestra_aleatoria.calculateDistanceCorrelation(int(self.tamano.text()))
             self.distance_number.display(muestra_aleatoria.distance_correlation)
     def getCSV(self):
@@ -56,7 +52,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             muestra_archivo.y = self.df["y"]
             self.x = muestra_archivo.x
             self.y = muestra_archivo.y
-            print(muestra_archivo.x)
             muestra_archivo.calculateDistanceCorrelation(len(muestra_archivo.x))
             self.distance_number.display(muestra_archivo.distance_correlation)
         else:
