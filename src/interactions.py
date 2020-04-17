@@ -45,13 +45,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.df = pd.read_csv(str(filePath))
             self.csv = True
     def calcularArchivo(self):
-        #AUN NO FUNCIONA BIEN LO DE LEER CSV
         if self.csv == True:
             muestra_archivo = Distance_correlation()
-            #Aqui esta lo que tienen que cambiar de pandas
-            muestra_archivo.x = self.df["x"]
-            muestra_archivo.y = self.df["y"]
-            print(muestra_archivo.x)
+            muestra_archivo.x = np.zeros(len(self.df.index))
+            muestra_archivo.y = np.zeros(len(self.df.index))
+            for i in range(len(self.df.index)):
+                muestra_archivo.x[i] = locale.atof(self.df.loc[i]["x"])
+                muestra_archivo.y[i] = locale.atof(self.df.loc[i]["y"])
             self.x = muestra_archivo.x
             self.y = muestra_archivo.y
             muestra_archivo.calculateDistanceCorrelation(len(muestra_archivo.x))
