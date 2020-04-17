@@ -48,8 +48,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #AUN NO FUNCIONA BIEN LO DE LEER CSV
         if self.csv == True:
             muestra_archivo = Distance_correlation()
+            #Aqui esta lo que tienen que cambiar de pandas
             muestra_archivo.x = self.df["x"]
             muestra_archivo.y = self.df["y"]
+            print(muestra_archivo.x)
             self.x = muestra_archivo.x
             self.y = muestra_archivo.y
             muestra_archivo.calculateDistanceCorrelation(len(muestra_archivo.x))
