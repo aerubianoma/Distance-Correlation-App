@@ -78,4 +78,3 @@ class Distance_correlation():
             self.distance_correlation = 0;
         print("The distance correlation is: "+str(self.distance_correlation));
 
-
