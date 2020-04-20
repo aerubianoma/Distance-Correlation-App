@@ -18,6 +18,7 @@ class Node:
 class LinkedList:
     def __init__(self):
         self.head = None
+        self.tail = None
 
     def isEmpty(self):
         """Check if the list is empty"""
@@ -138,20 +139,14 @@ class LinkedList:
 
     def append(self, item):
         """Append item to the end of the list"""
-        current = self.head
-        previous = None
-        pos = 0
-        length = self.size()
-        while pos < length:
-            previous = current
-            current = current.getNext()
-            pos += 1
-        new_node = Node(item)
-        if previous is None:
-            new_node.setNext(current)
-            self.head = new_node
+        temp = Node(item)
+        temp.next = None
+        if self.tail == None:
+            self.head = temp
+            self.tail = temp
         else:
-            previous.setNext(new_node)
+            self.tail.next = temp
+            self.tail = temp
 
     def printList(self):
         """Print the list"""
