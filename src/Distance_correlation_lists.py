@@ -3,28 +3,28 @@ from Linked_list import *
 sys.path.append("..")
 from lib.lib import *
 class Distance_correlation_list():
-    # Vectores aleatorios
-    # Cuando se instancie el objeto, se deben cargar estos vectores usando la clase anterior
-    x = LinkedList()
-    y = LinkedList()
-    # Matrices de distancias
-    matrix_distances_x = LinkedList();
-    matrix_distances_y = LinkedList();
-    # Promedios a calcular de estas matrices
-    row_average_x = LinkedList();
-    column_average_x = LinkedList();
-    total_average_x = 0.;
-    row_average_y = LinkedList();
-    column_average_y = LinkedList();
-    total_avergae_y = 0.;
-    # Matrices usadas para calcular la distancia de covariancia
-    A = LinkedList();
-    B = LinkedList();
-    # Valores necesarios para calcular la distancia de correlacion
-    distance_covariance_x_y = 0.;
-    distance_covariance_x_x = 0.;
-    distance_covariance_y_y = 0.;
-    distance_correlation = 0.;
+    def __init__(self):
+        # Cuando se instancie el objeto, se deben cargar estos vectores usando la clase anterior
+        self.x = LinkedList()
+        self.y = LinkedList()
+        # Matrices de distancias
+        self.matrix_distances_x = LinkedList();
+        self.matrix_distances_y = LinkedList();
+        # Promedios a calcular de estas matrices
+        self.row_average_x = LinkedList();
+        self.column_average_x = LinkedList();
+        self.total_average_x = 0.;
+        self.row_average_y = LinkedList();
+        self.column_average_y = LinkedList();
+        self.total_avergae_y = 0.;
+        # Matrices usadas para calcular la distancia de covariancia
+        self.A = LinkedList();
+        self.B = LinkedList();
+        # Valores necesarios para calcular la distancia de correlacion
+        self.distance_covariance_x_y = 0.;
+        self.distance_covariance_x_x = 0.;
+        self.distance_covariance_y_y = 0.;
+        self.distance_correlation = 0.;
     # Se llena la matriz de distancias
     def fillDistanceMatrix(self,n):
         fillMatrixZero(self.matrix_distances_x,n);
@@ -148,12 +148,3 @@ class Distance_correlation_list():
         else:
             self.distance_correlation = 0;
         print("The distance correlation is: "+str(self.distance_correlation));
-for i in range(10):
-    prueba = Distance_correlation_list()    
-    for j in range(5):
-        prueba.x.append(random.uniform(-1,1))
-        prueba.y.append(random.uniform(-1,1))
-    prueba.calculateDistanceCorrelation(5)
-    for w in range(5):
-        prueba.x.pop()
-        prueba.y.pop()

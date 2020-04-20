@@ -2,28 +2,28 @@ import sys
 sys.path.append("..")
 from lib.lib import *
 class Distance_correlation():
-    # Vectores aleatorios
-    # Cuando se instancie el objeto, se deben cargar estos vectores usando la clase anterior
-    x = np.array;
-    y = np.array;
-    # Matrices de distancias
-    matrix_distances_x = np.array;
-    matrix_distances_y = np.array;
-    # Promedios a calcular de estas matrices
-    row_average_x = np.array;
-    column_average_x = np.array;
-    total_average_x = 0.;
-    row_average_y = np.array;
-    column_average_y = np.array;
-    total_avergae_y = 0.;
-    # Matrices usadas para calcular la distancia de covariancia
-    A = np.array;
-    B = np.array;
-    # Valores necesarios para calcular la distancia de correlacion
-    distance_covariance_x_y = 0.;
-    distance_covariance_x_x = 0.;
-    distance_covariance_y_y = 0.;
-    distance_correlation = 0.;
+    def __init__(self):
+        # Cuando se instancie el objeto, se deben cargar estos vectores usando la clase anterior
+        self.x = np.array;
+        self.y = np.array;
+        # Matrices de distancias
+        self.matrix_distances_x = np.array;
+        self.matrix_distances_y = np.array;
+        # Promedios a calcular de estas matrices
+        self.row_average_x = np.array;
+        self.column_average_x = np.array;
+        self.total_average_x = 0.;
+        self.row_average_y = np.array;
+        self.column_average_y = np.array;
+        self.total_avergae_y = 0.;
+        # Matrices usadas para calcular la distancia de covariancia
+        self.A = np.array;
+        self.B = np.array;
+        # Valores necesarios para calcular la distancia de correlacion
+        self.distance_covariance_x_y = 0.;
+        self.distance_covariance_x_x = 0.;
+        self.distance_covariance_y_y = 0.;
+        self.distance_correlation = 0.;
     # Se llena la matriz de distancias
     def fillDistanceMatrix(self,n):
         self.matrix_distances_x = np.zeros((n,n));

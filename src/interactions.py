@@ -49,19 +49,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 print("error")
                 QMessageBox.about(self, "Error", "Porfavor ingrese el tamaño")
             else:
-                print("entro")
+                self.x = []
+                self.y = []
                 muestra_aleatoria = Distance_correlation_list()
                 for i in range(int(self.tamano.text())):
                     a = random.uniform(-1, 1)
                     b = random.uniform(-1, 1)
                     muestra_aleatoria.x.append(a)
                     muestra_aleatoria.y.append(b)
-                    #self.x.append(a)
-                    #self.y.append(b)
+                    self.x.append(a)
+                    self.y.append(b)
                 muestra_aleatoria.calculateDistanceCorrelation(int(self.tamano.text()))
-                for i in range(int(self.tamano.text())):
-                    muestra_aleatoria.x.pop()
-                    muestra_aleatoria.y.pop()
                 self.distance_number.display(muestra_aleatoria.distance_correlation)
                 
                 
@@ -87,8 +85,38 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 print("error")
                 QMessageBox.about(self, "Error", "Archivo csv no cargado aún")
+        if self.listas.isChecked() == True:
+            if self.csv == True:
+                self.x = []
+                self.y = []
+                muestra_archivo = Distance_correlation_list()
+                for i in range(len(self.df.index)):
+                    muestra_archivo.x.append(locale.atof(self.df.loc[i]["x"]))
+                    muestra_archivo.y.append(locale.atof(self.df.loc[i]["y"]))
+                    self.x.append(locale.atof(self.df.loc[i]["x"]))
+                    self.y.append(locale.atof(self.df.loc[i]["y"]))
+                muestra_archivo.calculateDistanceCorrelation(len(self.df.index))
+                self.distance_number.display(muestra_archivo.distance_correlation)
+            else:
+                print("error")
+                QMessageBox.about(self, "Error", "Archivo csv no cargado aún")
     def plot(self):
         if self.arrays.isChecked() == True:
+            if self.x != []: 
+                self.qmc.setParent(None)
+                self.ntb.setParent(None)
+                #Se instancia el Lienzo con la grafica de Matplotlib
+                self.qmc = Lienzo(self.grafica,self.x,self.y)
+                # se instancia la barra de navegacion
+                self.ntb = NavigationToolbar(self.qmc, self.grafica)
+                #la barra de navegacion en el vbox
+                self.vbl.addWidget(self.qmc)
+                self.vbl.addWidget(self.ntb)
+                print("grafica mostrada al usuario")
+            else:
+                print("error")
+                QMessageBox.about(self, "Error", "Primero debe calcular el coeficiente")
+        if self.listas.isChecked() == True:
             if self.x != []: 
                 self.qmc.setParent(None)
                 self.ntb.setParent(None)
