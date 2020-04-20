@@ -11,6 +11,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.x = []
         self.y = []
         self.setupUi(self)
+        self._toggle = True
+        self.arrays.setChecked(self._toggle)
+        self.listas.setChecked(not self._toggle)
+        self.arrays.clicked.connect(self.toggle)
+        self.listas.clicked.connect(self.toggle)
         self.calcular_aleatorio.clicked.connect(self.calcularAleatorio)
         self.calcular_archivo.clicked.connect(self.calcularArchivo)
         self.insertar_tabla.clicked.connect(self.getCSV)
@@ -27,17 +32,39 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.vbl.addWidget(self.ntb)
         self.graficar.clicked.connect(self.plot)
     def calcularAleatorio(self):
-        if self.tamano.text()=="":
-            print("error")
-            QMessageBox.about(self, "Error", "Porfavor ingrese el tamaño")
-        else:
-            muestra_aleatoria = Distance_correlation()
-            muestra_aleatoria.x = np.random.uniform(-1,1,int(self.tamano.text()))
-            muestra_aleatoria.y = np.random.uniform(-1,1,int(self.tamano.text()))
-            self.x = muestra_aleatoria.x
-            self.y = muestra_aleatoria.y
-            muestra_aleatoria.calculateDistanceCorrelation(int(self.tamano.text()))
-            self.distance_number.display(muestra_aleatoria.distance_correlation)
+        if self.arrays.isChecked() == True:
+            if self.tamano.text()=="":
+                print("error")
+                QMessageBox.about(self, "Error", "Porfavor ingrese el tamaño")
+            else:
+                muestra_aleatoria = Distance_correlation()
+                muestra_aleatoria.x = np.random.uniform(-1,1,int(self.tamano.text()))
+                muestra_aleatoria.y = np.random.uniform(-1,1,int(self.tamano.text()))
+                self.x = muestra_aleatoria.x
+                self.y = muestra_aleatoria.y
+                muestra_aleatoria.calculateDistanceCorrelation(int(self.tamano.text()))
+                self.distance_number.display(muestra_aleatoria.distance_correlation)
+        if self.listas.isChecked() == True:
+            if self.tamano.text()=="":
+                print("error")
+                QMessageBox.about(self, "Error", "Porfavor ingrese el tamaño")
+            else:
+                print("entro")
+                muestra_aleatoria = Distance_correlation_list()
+                for i in range(int(self.tamano.text())):
+                    a = random.uniform(-1, 1)
+                    b = random.uniform(-1, 1)
+                    muestra_aleatoria.x.append(a)
+                    muestra_aleatoria.y.append(b)
+                    #self.x.append(a)
+                    #self.y.append(b)
+                muestra_aleatoria.calculateDistanceCorrelation(int(self.tamano.text()))
+                for i in range(int(self.tamano.text())):
+                    muestra_aleatoria.x.pop()
+                    muestra_aleatoria.y.pop()
+                self.distance_number.display(muestra_aleatoria.distance_correlation)
+                
+                
     def getCSV(self):
         filePath, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', '../data')
         if filePath != "":
@@ -45,35 +72,41 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.df = pd.read_csv(str(filePath))
             self.csv = True
     def calcularArchivo(self):
-        if self.csv == True:
-            muestra_archivo = Distance_correlation()
-            muestra_archivo.x = np.zeros(len(self.df.index))
-            muestra_archivo.y = np.zeros(len(self.df.index))
-            for i in range(len(self.df.index)):
-                muestra_archivo.x[i] = locale.atof(self.df.loc[i]["x"])
-                muestra_archivo.y[i] = locale.atof(self.df.loc[i]["y"])
-            self.x = muestra_archivo.x
-            self.y = muestra_archivo.y
-            muestra_archivo.calculateDistanceCorrelation(len(muestra_archivo.x))
-            self.distance_number.display(muestra_archivo.distance_correlation)
-        else:
-            print("error")
-            QMessageBox.about(self, "Error", "Archivo csv no cargado aún")
+        if self.arrays.isChecked() == True:
+            if self.csv == True:
+                muestra_archivo = Distance_correlation()
+                muestra_archivo.x = np.zeros(len(self.df.index))
+                muestra_archivo.y = np.zeros(len(self.df.index))
+                for i in range(len(self.df.index)):
+                    muestra_archivo.x[i] = locale.atof(self.df.loc[i]["x"])
+                    muestra_archivo.y[i] = locale.atof(self.df.loc[i]["y"])
+                self.x = muestra_archivo.x
+                self.y = muestra_archivo.y
+                muestra_archivo.calculateDistanceCorrelation(len(muestra_archivo.x))
+                self.distance_number.display(muestra_archivo.distance_correlation)
+            else:
+                print("error")
+                QMessageBox.about(self, "Error", "Archivo csv no cargado aún")
     def plot(self):
-        if self.x != []: 
-            self.qmc.setParent(None)
-            self.ntb.setParent(None)
-            #Se instancia el Lienzo con la grafica de Matplotlib
-            self.qmc = Lienzo(self.grafica,self.x,self.y)
-            # se instancia la barra de navegacion
-            self.ntb = NavigationToolbar(self.qmc, self.grafica)
-            #la barra de navegacion en el vbox
-            self.vbl.addWidget(self.qmc)
-            self.vbl.addWidget(self.ntb)
-            print("grafica mostrada al usuario")
-        else:
-            print("error")
-            QMessageBox.about(self, "Error", "Primero debe calcular el coeficiente")
+        if self.arrays.isChecked() == True:
+            if self.x != []: 
+                self.qmc.setParent(None)
+                self.ntb.setParent(None)
+                #Se instancia el Lienzo con la grafica de Matplotlib
+                self.qmc = Lienzo(self.grafica,self.x,self.y)
+                # se instancia la barra de navegacion
+                self.ntb = NavigationToolbar(self.qmc, self.grafica)
+                #la barra de navegacion en el vbox
+                self.vbl.addWidget(self.qmc)
+                self.vbl.addWidget(self.ntb)
+                print("grafica mostrada al usuario")
+            else:
+                print("error")
+                QMessageBox.about(self, "Error", "Primero debe calcular el coeficiente")
+    def toggle(self):
+        self._toggle = not self._toggle
+        self.arrays.setChecked(self._toggle)
+        self.listas.setChecked(not self._toggle)
 class Lienzo(FigureCanvas):
     x = []
     y = []

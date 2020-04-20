@@ -49,6 +49,12 @@ class Ui_MainWindow(object):
         self.grafica = QtWidgets.QGraphicsView(self.centralwidget)
         self.grafica.setGeometry(QtCore.QRect(30, 170, 671, 401))
         self.grafica.setObjectName("grafica")
+        self.arrays = QtWidgets.QCheckBox(self.centralwidget)
+        self.arrays.setGeometry(QtCore.QRect(290, 70, 101, 31))
+        self.arrays.setObjectName("arrays")
+        self.listas = QtWidgets.QCheckBox(self.centralwidget)
+        self.listas.setGeometry(QtCore.QRect(290, 110, 101, 31))
+        self.listas.setObjectName("listas")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 731, 20))
@@ -57,6 +63,9 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.toolBar = QtWidgets.QToolBar(MainWindow)
+        self.toolBar.setObjectName("toolBar")
+        MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
 
         self.retranslateUi(MainWindow)
         self.calcular_aleatorio.clicked.connect(self.distance_number.show)
@@ -68,10 +77,13 @@ class Ui_MainWindow(object):
         self.calcular_aleatorio.setText(_translate("MainWindow", "Muestras aleatorias"))
         self.calcular_archivo.setText(_translate("MainWindow", "Archivo csv"))
         self.label.setText(_translate("MainWindow", "Calcular la correlacion de la distancia con:"))
-        self.label_2.setText(_translate("MainWindow", "tamaño de la muestra:"))
+        self.label_2.setText(_translate("MainWindow", "Tamaño de la muestra:"))
         self.label_3.setText(_translate("MainWindow", "La correlacion de la distancia es:"))
         self.graficar.setText(_translate("MainWindow", "Graficar datos"))
         self.label_4.setText(_translate("MainWindow", "Grafica:"))
+        self.arrays.setText(_translate("MainWindow", "Modo arrays"))
+        self.listas.setText(_translate("MainWindow", "Modo listas"))
+        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
 
 
 if __name__ == "__main__":

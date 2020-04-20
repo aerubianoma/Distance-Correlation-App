@@ -117,7 +117,7 @@ class LinkedList:
         If position is provided, return and remove the item at that position.
         If index is out of bounds, raise IndexError
         """
-        if position > self.size():
+        if  position != None and position > self.size():
             print('Index out of bounds')
             raise IndexError
             
@@ -134,7 +134,6 @@ class LinkedList:
                 pos += 1
                 ret = current.getData()
             previous.setNext(current.getNext())
-        print(ret)
         return ret
 
     def append(self, item):

@@ -90,7 +90,7 @@ class Distance_correlation_list():
         fillMatrixZero(self.A,n);
         fillMatrixZero(self.B,n);
         current_A = self.A.head;
-        current_B = self.A.head;
+        current_B = self.B.head;
         current_distances_x = self.matrix_distances_x.head;
         current_distances_y = self.matrix_distances_y.head;
         current_row_x = self.row_average_x.head;
@@ -104,7 +104,7 @@ class Distance_correlation_list():
             current_2_distances_y = current_distances_y.getData().head;
             for j in range(n):
                 current_2_A.setData(current_2_distances_x.getData() - current_row_x.getData() - current_column_x.getData() + self.total_average_x);
-                current_2_A.setData(current_2_distances_y.getData() - current_row_y.getData() - current_column_y.getData() + self.total_average_y);
+                current_2_B.setData(current_2_distances_y.getData() - current_row_y.getData() - current_column_y.getData() + self.total_average_y);
                 current_2_A = current_2_A.getNext()
                 current_2_B = current_2_B.getNext() 
                 current_column_x = current_column_x.getNext();
@@ -122,7 +122,7 @@ class Distance_correlation_list():
     # Se calculan las distancia de covarianza 
     def calculateDistanceCovariance(self,n):
         current_A = self.A.head;
-        current_B = self.A.head;
+        current_B = self.B.head;
         for i in range(n):
             current_2_A = current_A.getData().head;
             current_2_B = current_B.getData().head;
@@ -132,8 +132,8 @@ class Distance_correlation_list():
                 self.distance_covariance_y_y +=  (current_2_B.getData())**2;
                 current_2_A = current_2_A.getNext()
                 current_2_B = current_2_B.getNext() 
-        current_A = current_A.getNext();
-        current_B = current_B.getNext();
+            current_A = current_A.getNext();
+            current_B = current_B.getNext();
         self.distance_covariance_x_y = self.distance_covariance_x_y*(1/n**2);
         self.distance_covariance_x_x = self.distance_covariance_x_x*(1/n**2);
         self.distance_covariance_y_y = self.distance_covariance_y_y*(1/(n**2));
@@ -148,3 +148,12 @@ class Distance_correlation_list():
         else:
             self.distance_correlation = 0;
         print("The distance correlation is: "+str(self.distance_correlation));
+for i in range(10):
+    prueba = Distance_correlation_list()    
+    for j in range(5):
+        prueba.x.append(random.uniform(-1,1))
+        prueba.y.append(random.uniform(-1,1))
+    prueba.calculateDistanceCorrelation(5)
+    for w in range(5):
+        prueba.x.pop()
+        prueba.y.pop()
