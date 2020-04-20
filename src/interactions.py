@@ -72,6 +72,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def calcularArchivo(self):
         if self.arrays.isChecked() == True:
             if self.csv == True:
+                locale.setlocale(locale.LC_ALL, '')
                 muestra_archivo = Distance_correlation()
                 muestra_archivo.x = np.zeros(len(self.df.index))
                 muestra_archivo.y = np.zeros(len(self.df.index))
@@ -142,7 +143,7 @@ class Lienzo(FigureCanvas):
         # Se instancia el objeto figure
         self.fig = Figure()
         #Se define la grafica en coordenadas polares
-        self.axes = self.fig.add_subplot()
+        self.axes = self.fig.add_subplot(1,1,1)
         #Se define el rango de 0 a 20 con saltos de 0.01
         self.x = x
         #Se calcula los valores de la funcion.
