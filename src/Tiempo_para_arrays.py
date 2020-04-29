@@ -82,14 +82,15 @@ class Distance_correlation():
         else:
             self.distance_correlation = 0;
         print("The distance correlation is: "+str(self.distance_correlation));
-df = pd.read_csv('100_datos_aleatorios.csv')
-locale.setlocale(locale.LC_ALL, '')
+df = pd.read_csv('5000_datos_aleatorios.csv')
+locale.setlocale(locale.LC_ALL, '')           
 muestra_archivo = Distance_correlation()
 muestra_archivo.x = np.zeros(len(df.index))
 muestra_archivo.y = np.zeros(len(df.index))
 for i in range(len(df.index)):
     muestra_archivo.x[i] = locale.atof(df.loc[i]["x"])
-    muestra_archivo.y[i] = locale.atof(df.loc[i]["y"])''',number=100))
+    muestra_archivo.y[i] = locale.atof(df.loc[i]["y"])
+muestra_archivo.calculateDistanceCorrelation(len(df.index))''',number=1))
 
 '''import numpy as np
 import sys
