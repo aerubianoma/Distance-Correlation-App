@@ -10,7 +10,7 @@ https://raw.githubusercontent.com/aerubianoma/distance_correlation/master/otros_
 Con este boton es posible calcular la distancia de correlación con una base de datos en particular que esté en formato .csv, previamente cargada con el boton que se encuentra arriba.  
 https://raw.githubusercontent.com/aerubianoma/distance_correlation/master/otros_archivos/Graficas_datos.png   
 Con este boton se podrá visualizar el comportamiento de los datos previamente seleccionados a travez de una grafica la cual posee distintos botonos para interactuar con esta.  
-https://raw.githubusercontent.com/aerubianoma/distance_correlation/master/Modo_arrays.png     
+https://raw.githubusercontent.com/aerubianoma/distance_correlation/master/otros_archivos/Modo_arrays.png     
 Con este boton el usuario podrá seleccionar si los calculos se llevaran a cabo almacenando los datos en arreglos.
-https://raw.githubusercontent.com/aerubianoma/distance_correlation/master/Modo_listas.png     
+https://raw.githubusercontent.com/aerubianoma/distance_correlation/master/otros_archivos/Modo_listas.png     
 Con este boton el usuario podrá seleccionar si los calculos se llevaran a cabo almacenando los datos en arreglos.
