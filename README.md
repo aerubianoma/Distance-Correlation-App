@@ -1,5 +1,6 @@
 # distance_correlation
 Proyecto para la asignatura de estructura de datos.  
+En la version actual contamos con todos los funcionamientos que se decribiran mas abajo, estos se realizan a travez del lenguaje de programación Python y con la ayuda de la libreria pyqt5 se realizo la GUI, además las estructuras de datos utilizadas (arrays y listas enlazadas)
 A continuación se introduciran las imagenes de los botones de nuestra GUI con su respectivo funcionamiento:
 https://raw.githubusercontent.com/aerubianoma/distance_correlation/master/    
 Con este boton el usuario puede ingresar su base de datos desde el directorio en donde esté guardado.    
