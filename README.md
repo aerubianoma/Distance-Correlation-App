@@ -14,3 +14,4 @@ https://raw.githubusercontent.com/aerubianoma/distance_correlation/master/otros_
 Con este boton el usuario podrá seleccionar si los calculos se llevaran a cabo almacenando los datos en arreglos.
 https://raw.githubusercontent.com/aerubianoma/distance_correlation/master/otros_archivos/Modo_listas.png     
 Con este boton el usuario podrá seleccionar si los calculos se llevaran a cabo almacenando los datos en arreglos.
+![](otros_archivos/Archivo_csv.png)
