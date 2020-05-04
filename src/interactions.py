@@ -6,7 +6,7 @@ from all_class import *
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
-        insertar = QtGui.QIcon('../otros archivos/insertar.svg')
+        insertar = QtGui.QIcon('../otros_archivos/icono_insertar.svg')
         self.csv = False
         self.x = []
         self.y = []
