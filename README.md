@@ -11,7 +11,7 @@ Con este boton es posible calcular la distancia de correlación con una base de 
 ![](otros_archivos/Graficas_datos.png)   
 Con este boton se podrá visualizar el comportamiento de los datos previamente seleccionados a travez de una grafica la cual posee distintos botonos para interactuar con esta.  
 ![](otros_archivos/Modo_arrays.png)     
-Con este boton el usuario podrá seleccionar si los calculos se llevaran a cabo almacenando los datos en arreglos.
+Con este boton el usuario podrá seleccionar si los calculos se llevaran a cabo almacenando los datos en arreglos.  
 ![](otros_archivos/Modo_listas.png)     
 Con este boton el usuario podrá seleccionar si los calculos se llevaran a cabo almacenando los datos en listas.
 
