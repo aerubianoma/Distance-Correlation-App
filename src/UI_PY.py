@@ -7,7 +7,9 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import ctypes
+myappid = 'mycompany.myproduct.subproduct.version' # arbitrary string
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -81,6 +83,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.calcular_aleatorio.clicked.connect(self.distance_number.show)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        MainWindow.setWindowIcon(QtGui.QIcon('../otros_archivos/distance.jpg'))
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

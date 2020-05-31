@@ -24,6 +24,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.calcular_archivo.clicked.connect(self.calcularArchivo)
         self.insertar_tabla.clicked.connect(self.getCSV)
         self.deshacer.clicked.connect(self.undoActions)
+        self.hacer.clicked.connect(self.doActions)
         self.distance_number.setDigitCount(12)
         self.distance_number.setSmallDecimalPoint(True)
         self.insertar_tabla.setIcon(insertar)
@@ -39,6 +40,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.vbl.addWidget(self.ntb)
         self.graficar.clicked.connect(self.plot)
         self.pila = Stack()
+        self.pila2 = Stack()
     def calcularAleatorio(self):
         if self.arrays.isChecked() == True:
             if self.tamano.text()=="":
@@ -162,7 +164,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.listas.setChecked(not self._toggle)
     def undoActions(self):
         if self.pila.empty()==False:            
-            self.pila.pop()
+            self.pila2.push(self.pila.pop())
             if self.pila.top()[-1] == "numero": 
                 if self.pila.size()>=1:
                     actions = self.pila.top()
@@ -171,6 +173,26 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.pila.top()[-1] == "grafica":
                 if self.pila.size()>=1:
                     actions = self.pila.top()
+                    self.qmc.setParent(None)
+                    self.ntb.setParent(None)
+                    #Se instancia el Lienzo con la grafica de Matplotlib
+                    self.qmc = Lienzo(self.grafica,actions[0],actions[1],actions[2])
+                    # se instancia la barra de navegacion
+                    self.ntb = NavigationToolbar(self.qmc, self.grafica)
+                    #la barra de navegacion en el vbox
+                    self.vbl.addWidget(self.qmc)
+                    self.vbl.addWidget(self.ntb)
+    def doActions(self):
+        if self.pila2.empty()==False:            
+            self.pila2.pop()
+            if self.pila2.top()[-1] == "numero": 
+                if self.pila2.size()>=1:
+                    actions = self.pila2.top()
+                    self.distance_number.display(actions[0])
+                    self.tipo_entrada.setText(actions[1])
+            if self.pila2.top()[-1] == "grafica":
+                if self.pila2.size()>=1:
+                    actions = self.pila2.top()
                     self.qmc.setParent(None)
                     self.ntb.setParent(None)
                     #Se instancia el Lienzo con la grafica de Matplotlib
