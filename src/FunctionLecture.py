@@ -1,18 +1,7 @@
-import operator
-import math
-class Stack:
-     def __init__(self):
-         self.items = []
-     def empty(self):
-         return self.items == []
-     def push(self, item):
-         self.items.append(item)
-     def pop(self):
-         return self.items.pop()
-     def top(self):
-         return self.items[len(self.items)-1]
-     def size(self):
-         return len(self.item)
+import sys
+sys.path.append("..")
+from lib.lib import *
+from all_class import *
 class BinaryTreeNode:
   def __init__(self,valor):
     self.value = valor 
@@ -83,19 +72,3 @@ def evaluateTree(expresionTree,valorX):
       return math.e
     else:
       return int(expresionTree.value)
-expresion = "(x^2)"
-arbol =createExpressionTree(expresion)
-print (evaluateTree(arbol,2))
-limiteInferior=5
-limiteSuperior=10
-step=0.5
-i=limiteInferior
-valX=[]
-valY=[]
-while (i<=limiteSuperior):
-  valX.append(i)
-  valY.append(evaluateTree(arbol,i))
-  i+=step
-print (valX)
-print("\n")
-print (valY)

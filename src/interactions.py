@@ -3,17 +3,23 @@ sys.path.append("..")
 from lib.lib import *
 from UI_PY import *
 from all_class import *
+import ctypes
+myappid = 'mycompany.myproduct.subproduct.version' # arbitrary string
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid) 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
-        insertar = QtGui.QIcon('../otros_archivos/icono_insertar.svg')
+        insertar1 = QtGui.QIcon('../otros_archivos/icono_insertar.svg')
         insertar2 = QtGui.QIcon('../otros_archivos/deshacer.png')
         insertar3 = QtGui.QIcon('../otros_archivos/hacer.png')
+        insertar4 = QtGui.QIcon('../otros_archivos/calcular.svg')
+        insertar5 = QtGui.QIcon('../otros_archivos/cola.png')
+        insertar6 = QtGui.QIcon('../otros_archivos/desencolar.jpg')
         self.csv = False
         self.x = []
         self.y = []
         self.undo = []
-        self.label = ""
+        self.label = "Bienvenido"
         self.setupUi(self)
         self._toggle = True
         self.arrays.setChecked(self._toggle)
@@ -25,11 +31,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.insertar_tabla.clicked.connect(self.getCSV)
         self.deshacer.clicked.connect(self.undoActions)
         self.hacer.clicked.connect(self.doActions)
+        self.calcular.clicked.connect(self.calculateFunction)
+        self.encolar.clicked.connect(self.agregar)
+        self.desencolar.clicked.connect(self.sacar)
         self.distance_number.setDigitCount(12)
         self.distance_number.setSmallDecimalPoint(True)
-        self.insertar_tabla.setIcon(insertar)
+        self.insertar_tabla.setIcon(insertar1)
         self.deshacer.setIcon(insertar2)
         self.hacer.setIcon(insertar3)
+        self.calcular.setIcon(insertar4)
+        self.encolar.setIcon(insertar5)
+        self.desencolar.setIcon(insertar6)
         self.vbl = QVBoxLayout(self.grafica)
         #Se instancia el Lienzo con la grafica de Matplotlib
         self.qmc = Lienzo(self.grafica,self.x,self.y,self.label)
@@ -41,6 +53,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graficar.clicked.connect(self.plot)
         self.pila = Stack()
         self.pila2 = Stack()
+        self.cola = PriorityQueue()
     def calcularAleatorio(self):
         if self.arrays.isChecked() == True:
             if self.tamano.text()=="":
@@ -182,6 +195,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     #la barra de navegacion en el vbox
                     self.vbl.addWidget(self.qmc)
                     self.vbl.addWidget(self.ntb)
+            if self.pila.top()[-1] == "funcion":
+                if self.pila.size() >= 1:
+                    actions = self.pila.top()
+                    self.qmc.setParent(None)
+                    self.ntb.setParent(None)
+                    #Se instancia el Lienzo con la grafica de Matplotlib
+                    self.qmc = Lienzo(self.grafica,actions[2],actions[3],actions[1])
+                    # se instancia la barra de navegacion
+                    self.ntb = NavigationToolbar(self.qmc, self.grafica)
+                    #la barra de navegacion en el vbox
+                    self.vbl.addWidget(self.qmc)
+                    self.vbl.addWidget(self.ntb)
+                    self.distance_number.display(actions[0])
+                    self.tipo_entrada.setText(actions[1])
     def doActions(self):
         if self.pila2.empty()==False:            
             self.pila2.pop()
@@ -202,6 +229,98 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     #la barra de navegacion en el vbox
                     self.vbl.addWidget(self.qmc)
                     self.vbl.addWidget(self.ntb)
+            if self.pila2.top()[-1] == "funcion":
+                if self.pila2.size() >= 1:
+                    actions = self.pila2.top()
+                    self.qmc.setParent(None)
+                    self.ntb.setParent(None)
+                    #Se instancia el Lienzo con la grafica de Matplotlib
+                    self.qmc = Lienzo(self.grafica,actions[2],actions[3],actions[1])
+                    # se instancia la barra de navegacion
+                    self.ntb = NavigationToolbar(self.qmc, self.grafica)
+                    #la barra de navegacion en el vbox
+                    self.vbl.addWidget(self.qmc)
+                    self.vbl.addWidget(self.ntb)
+                    self.distance_number.display(actions[0])
+                    self.tipo_entrada.setText(actions[1])
+    def calculateFunction(self):
+        if (self.ingresar_funcion.text()=="" or self.extremo_izquierdo.text()=="" or self.extremo_derecho.text()==""  or self.salto.text()=="") :
+            print("error")
+            QMessageBox.about(self, "Error", "Debe llenar todos los espacios de la izquierda primero")
+        else:
+            self.x = []
+            self.y = []
+            expresion = self.ingresar_funcion.text()
+            arbol = createExpressionTree(expresion)
+            limiteInferior = float(self.extremo_izquierdo.text())
+            limiteSuperior = float(self.extremo_derecho.text())
+            step = float(self.salto.text())
+            i = limiteInferior
+            while i <= limiteSuperior:
+                self.x.append(i)
+                self.y.append(evaluateTree(arbol,i))
+                i += step
+            funcion = Distance_correlation()
+            funcion.x = self.x
+            funcion.y = self.y
+            funcion.calculateDistanceCorrelation(len(funcion.x))
+            self.distance_number.display(funcion.distance_correlation)
+            self.qmc.setParent(None)
+            self.ntb.setParent(None)
+            #Se instancia el Lienzo con la grafica de Matplotlib
+            self.qmc = Lienzo(self.grafica,self.x,self.y,"y="+expresion)
+            # se instancia la barra de navegacion
+            self.ntb = NavigationToolbar(self.qmc, self.grafica)
+            #la barra de navegacion en el vbox
+            self.vbl.addWidget(self.qmc)
+            self.vbl.addWidget(self.ntb)
+            self.tipo_entrada.setText("y="+expresion)
+            self.undo = [funcion.distance_correlation,"y="+expresion,self.x,self.y,"funcion"]
+            self.pila.push(self.undo)
+    def agregar(self):
+        if (self.ingresar_funcion.text()=="" or self.extremo_izquierdo.text()=="" or self.extremo_derecho.text()==""  or self.salto.text()=="") :
+            print("error")
+            QMessageBox.about(self, "Error", "Debe llenar todos los espacios de arriba primero")
+        if self.prioridad.text()=="":
+            print("error")
+            QMessageBox.about(self, "Error", "Debe llenar la prioridad primero")
+        else:
+           self.cola.enqueue([self.ingresar_funcion.text(),float(self.extremo_izquierdo.text()),float(self.extremo_derecho.text()),float(self.salto.text())],int(self.prioridad.text())) 
+    def sacar(self):
+        if self.cola.size()>0:
+            datos = self.cola.dequeue()
+            self.x = []
+            self.y = []
+            expresion = datos[0][0]
+            arbol = createExpressionTree(expresion)
+            limiteInferior = datos[0][1]
+            limiteSuperior = datos[0][2]
+            step = datos[0][3]
+            i = limiteInferior
+            while i <= limiteSuperior:
+                self.x.append(i)
+                self.y.append(evaluateTree(arbol,i))
+                i += step
+            funcion = Distance_correlation()
+            funcion.x = self.x
+            funcion.y = self.y
+            funcion.calculateDistanceCorrelation(len(funcion.x))
+            self.distance_number.display(funcion.distance_correlation)
+            self.qmc.setParent(None)
+            self.ntb.setParent(None)
+            #Se instancia el Lienzo con la grafica de Matplotlib
+            self.qmc = Lienzo(self.grafica,self.x,self.y,"y="+expresion)
+            # se instancia la barra de navegacion
+            self.ntb = NavigationToolbar(self.qmc, self.grafica)
+            #la barra de navegacion en el vbox
+            self.vbl.addWidget(self.qmc)
+            self.vbl.addWidget(self.ntb)
+            self.tipo_entrada.setText("y="+expresion)
+            self.undo = [funcion.distance_correlation,"y="+expresion,self.x,self.y,"funcion"]
+            self.pila.push(self.undo)
+        else:
+            print("error")
+            QMessageBox.about(self, "Error", "Debe encolar funciones primero")
         
 class Lienzo(FigureCanvas):
     x = []
@@ -244,4 +363,7 @@ def iniciar():
     window = MainWindow()
     window.show()
     app.exec_()
-    
+"""
+AÑADIR ESTA LINEA AL FINAL DE UI_PY  PARA QUE SALGA EL ICONO DE NUESTRA APP:
+MainWindow.setWindowIcon(QtGui.QIcon('../otros_archivos/distance.jpg'))
+"""  
