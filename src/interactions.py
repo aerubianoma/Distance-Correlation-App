@@ -15,6 +15,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         insertar4 = QtGui.QIcon('../otros_archivos/calcular.svg')
         insertar5 = QtGui.QIcon('../otros_archivos/cola.png')
         insertar6 = QtGui.QIcon('../otros_archivos/desencolar.jpg')
+        insertar7 = QtGui.QIcon('../otros_archivos/data.png')
         self.csv = False
         self.x = []
         self.y = []
@@ -34,6 +35,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.calcular.clicked.connect(self.calculateFunction)
         self.encolar.clicked.connect(self.agregar)
         self.desencolar.clicked.connect(self.sacar)
+        self.covid_buttom.clicked.connect(self.covid19)
         self.distance_number.setDigitCount(12)
         self.distance_number.setSmallDecimalPoint(True)
         self.insertar_tabla.setIcon(insertar1)
@@ -42,6 +44,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.calcular.setIcon(insertar4)
         self.encolar.setIcon(insertar5)
         self.desencolar.setIcon(insertar6)
+        self.covid_buttom.setIcon(insertar7)
         self.vbl = QVBoxLayout(self.grafica)
         #Se instancia el Lienzo con la grafica de Matplotlib
         self.qmc = Lienzo(self.grafica,self.x,self.y,self.label)
@@ -321,6 +324,36 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             print("error")
             QMessageBox.about(self, "Error", "Debe encolar funciones primero")
+    def getCovidData(self):
+        filePath, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', '../data')
+        if filePath != "":
+            print ("Dirección",filePath)
+            self.covid = pd.read_csv(str(filePath))
+    def calculateCovid(self):
+        data = {}
+        dates = []
+        self.x = []
+        self.y = []
+        muestra_covid = Distance_correlation()
+        for i in range(len(self.covid.index)):
+            dates.append(self.covid.loc[i]["date"])
+            data[self.covid.loc[i]["date"]]=[self.covid.loc[i]["cases"],self.covid.loc[i]["deaths"]]
+        for i in range(len(dates)):
+            self.x.append(data[dates[-i-1]][0])
+            self.y.append(data[dates[-i-1]][1])
+        muestra_covid.x = self.x
+        muestra_covid.y = self.y
+        muestra_covid.calculateDistanceCorrelation(len(dates))
+        self.distance_number.display(muestra_covid.distance_correlation)
+        self.label="datos casos vs muertes covid19"
+        self.tipo_entrada.setText(self.label)
+        self.undo = [muestra_covid.distance_correlation,self.label,"numero"]
+        self.pila.push(self.undo)
+        self.plot()
+        
+    def covid19(self):
+        self.getCovidData()
+        self.calculateCovid()
         
 class Lienzo(FigureCanvas):
     x = []
